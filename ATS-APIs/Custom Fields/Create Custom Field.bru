@@ -1,0 +1,32 @@
+meta {
+  name: Create Custom Field
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/custom_field
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+body:json {
+  {
+      "custom_field_name": "test",
+      "prompt": "Lorem ipsum dolor sit amet consectetur adipiscing elit.",
+      "custom_field_type": "recruiter",
+      "input_type": "str",
+      "input_minval": "0",
+      "input_maxval": "123"
+  }
+  
+  
+}
+
+settings {
+  encodeUrl: true
+}

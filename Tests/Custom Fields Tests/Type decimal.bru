@@ -1,0 +1,46 @@
+meta {
+  name: Type decimal
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/custom_field
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+body:json {
+  {
+      "custom_field_name": "TEST input decimal",
+      "prompt": "Lorem ipsum dolor sit amet consectetur adipiscing elit.",
+      "custom_field_type": "recruiter",
+      "input_type": "decimal",
+      "input_minval": "0",
+      "input_maxval": "123"
+  }
+  
+  
+}
+
+script:post-response {
+  
+  test("Status code is 200 Created", function () {
+      expect(res.getStatus()).to.equal(200);
+  });
+  var responseJSON = res.getBody();
+  
+  // Test for the presence of the custom_field_type property and its value
+  test("data.custom_field_type equals 'decimal'", function () {
+      expect(responseJSON.data).to.have.property('input_type').that.equals('decimal');
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+}

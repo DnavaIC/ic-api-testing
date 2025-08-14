@@ -1,0 +1,32 @@
+meta {
+  name: New Request
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base-url}}/ats/contracts/candidates/signup
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+          "name": "test test tester test",
+          "contract_id": "2564e679-f4b9-4cca-aee4-e71c7707411d",
+          "location_id": "76c045fb-f200-4572-9e62-afe9ba63cdca",
+          "email": "asdf@gmaill.com",
+          "phone_number": "+15533445656",
+          "street_address": "Lorem ipsum dolor sit amet consectetur",
+          "city": "test",
+          "state": "test",
+          "zipcode": "test",
+          "waist_size": null,
+          "inseam_size": null,
+          "belt_size": null
+  }
+}
+
+settings {
+  encodeUrl: true
+}

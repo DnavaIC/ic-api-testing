@@ -1,0 +1,19 @@
+meta {
+  name: Get All Locations
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/locations/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+settings {
+  encodeUrl: true
+}

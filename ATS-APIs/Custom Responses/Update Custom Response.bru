@@ -1,0 +1,46 @@
+meta {
+  name: Update Custom Response
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/custom_response/{{custom_response_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+body:json {
+  {
+      "prompt": "Test edit"
+  }
+  
+  
+}
+
+script:post-response {
+  var responseJSON = res.getBody();
+  
+  test("Check if update is successful", function () {
+      expect(responseJSON).to.have.property("message").that.includes("Successfully updated Custom Response");
+  });
+  
+  // Added a check for responseJSON.data to avoid errors
+  test("Check if data property exists", function () {
+      expect(responseJSON).to.have.property('data');
+  });
+  
+  if (responseJSON.data) {
+      expect(responseJSON.data).to.have.property('custom_response_id');
+      bru.setEnvVar("custom_response_id", responseJSON.data.custom_response_id);
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}

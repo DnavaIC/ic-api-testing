@@ -1,0 +1,51 @@
+meta {
+  name: wrong type
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/custom_field
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+body:json {
+  {
+      "custom_field_name": "TEST wrong field type",
+      "prompt": "Lorem ipsum dolor sit amet consectetur adipiscing elit.",
+      "custom_field_type": "wrong",
+      "input_type": "wrong",
+      "input_minval": "0",
+      "input_maxval": "123"
+  }
+  
+  
+}
+
+script:post-response {
+  var responseJSON = res.getBody();
+  
+  // Test to check if the response body matches the expected structure
+  test("Response body structure is valid", function () {
+      expect(responseJSON).to.have.all.keys('message', 'errors');
+  });
+  
+  // Test to check if the message and errors are as expected
+  test("Response body matches expected error message and errors", function () {
+      expect(responseJSON.message).to.equal("Malformed custom_field input.");
+      expect(responseJSON.errors).to.deep.equal([
+          "custom_field_type: Input should be 'recruiter', 'pricing' or 'applicant'",
+          "input_type: Input should be 'bool', 'str', 'int', 'decimal' or 'enum'"
+      ]);
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,32 @@
+meta {
+  name: First Get custom fields
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/custom_fields?page=1&rows=10
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 1
+  rows: 10
+}
+
+script:post-response {
+  var responseJSON = res.getBody();
+  
+  // Test to validate that the 'data' field is an empty array
+  test("The 'data' field is an empty array", function () {
+      expect(responseJSON).to.have.property('data').that.is.an('array').that.is.empty;
+  });
+  test("Status code is 200", function () {
+      expect(res.getStatus()).to.equal(200);
+  });
+}
+
+settings {
+  encodeUrl: true
+}

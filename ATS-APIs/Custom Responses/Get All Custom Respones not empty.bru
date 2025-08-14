@@ -1,0 +1,33 @@
+meta {
+  name: Get All Custom Respones not empty
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/custom_responses
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+script:post-response {
+  var responseJSON = res.getBody();
+  
+  // Test the response status code is 200
+  test("Response status code is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  // Test that total_rows is equal to 0
+  test("Total rows is equal to 1", function () {
+    expect(responseJSON.total_rows).to.equal(1);
+  });
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,26 @@
+meta {
+  name: Delete Custom Response
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://ats-qa-alb-791257949.us-west-2.elb.amazonaws.com/ats/contracts/{{contract-id}}/custom_response/{{custom_response_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+script:post-response {
+  test("Response status code is 204 No Content", function () {
+    expect(res.getStatus()).to.equal(204);
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,33 @@
+meta {
+  name: Get last ID
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/custom_fields?page=1&rows=10
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 1
+  rows: 10
+}
+
+script:post-response {
+  var responseJSON = res.getBody();
+  
+  
+  // Extracting custom_field_id from the data array
+  test("Save custom_field_id from the response", function () {
+      responseJSON.data.forEach(function(field) {
+          bru.setEnvVar("custom_field_id", field.custom_field_id);
+      });
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+}

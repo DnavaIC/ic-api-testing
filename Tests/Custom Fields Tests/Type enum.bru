@@ -1,0 +1,51 @@
+meta {
+  name: Type enum
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/custom_field
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+body:json {
+  {
+      "custom_field_name": "TEST input enum",
+      "prompt": "Lorem ipsum dolor sit amet consectetur adipiscing elit.",
+      "custom_field_type": "recruiter",
+      "input_type": "enum",
+      "input_minval": "0",
+      "input_maxval": "123"
+  }
+  
+  
+}
+
+script:post-response {
+  
+  test("Status code is 200 Created", function () {
+      expect(res.getStatus()).to.equal(200);
+  });
+  var responseJSON = res.getBody();
+  
+  // Test for the presence of the custom_field_type property and its value
+  test("data.custom_field_type equals 'enum'", function () {
+      expect(responseJSON.data).to.have.property('input_type').that.equals('enum');
+  });
+  
+  var responseJSON = res.getBody();
+  
+  // Save the value of 'custom_field_id' to a variable
+  bru.setEnvVar("custom_field_id", responseJSON.data.custom_field_id);
+  
+}
+
+settings {
+  encodeUrl: true
+}

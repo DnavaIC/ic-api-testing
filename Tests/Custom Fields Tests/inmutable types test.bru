@@ -1,0 +1,45 @@
+meta {
+  name: inmutable types test
+  type: http
+  seq: 11
+}
+
+put {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/custom_field/{{custom_field_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+body:json {
+  {
+     "custom_field_name": "edit edit",
+      "prompt": "EDIT.",
+      "custom_field_type": "pricing",
+      "input_type": "int",
+      "input_minval": "5",
+      "input_maxval": "100"
+  }
+}
+
+script:post-response {
+  var responseJSON = res.getBody();
+  
+  // Test to check if the response contains an 'errors' field that is an array
+  test("Response contains 'errors' field as an array", function () {
+      expect(responseJSON).to.have.property('errors').that.is.an('array');
+  });
+  
+  // Test to verify that the 'errors' field matches the expected error messages
+  test("Errors field matches the expected error messages", function () {
+      const expectedErrors = ['custom_field_type: Extra inputs are not permitted', 'input_type: Extra inputs are not permitted'];
+      expect(responseJSON.errors).to.eql(expectedErrors);
+  });
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,46 @@
+meta {
+  name: Type applicant
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/custom_field
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+body:json {
+  {
+      "custom_field_name": "TEST type applicant",
+      "prompt": "Lorem ipsum dolor sit amet consectetur adipiscing elit.",
+      "custom_field_type": "applicant",
+      "input_type": "str",
+      "input_minval": "0",
+      "input_maxval": "123"
+  }
+  
+  
+}
+
+script:post-response {
+  
+  test("Status code is 200 Created", function () {
+      expect(res.getStatus()).to.equal(200);
+  });
+  var responseJSON = res.getBody();
+  
+  // Test for the presence of the custom_field_type property and its value
+  test("data.custom_field_type equals 'applicant'", function () {
+      expect(responseJSON.data).to.have.property('custom_field_type').that.equals('applicant');
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+}

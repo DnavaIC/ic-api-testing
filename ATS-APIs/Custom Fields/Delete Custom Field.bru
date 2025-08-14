@@ -1,0 +1,19 @@
+meta {
+  name: Delete Custom Field
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/custom_field/c8ddbd59-1873-41b7-93dc-425e303ac095
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+settings {
+  encodeUrl: true
+}

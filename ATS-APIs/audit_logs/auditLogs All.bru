@@ -1,0 +1,23 @@
+meta {
+  name: auditLogs All
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base-url}}/ats/audit-logs/all?count=50
+  body: none
+  auth: bearer
+}
+
+params:query {
+  count: 50
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+settings {
+  encodeUrl: true
+}

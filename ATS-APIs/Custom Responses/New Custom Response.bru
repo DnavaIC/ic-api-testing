@@ -1,0 +1,50 @@
+meta {
+  name: New Custom Response
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/custom_response
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+body:json {
+  {
+      "custom_response_payload": "test",
+      "custom_field_id": "6f45fa8d-4fd9-41ca-8fe4-abaa67b0ac4e",
+      "candidate_id": "7c5fdc99-0119-4d86-bd38-27ebbe0f28f3",
+      "prompt": "Test"
+  }
+  
+  
+}
+
+script:post-response {
+  
+  var responseJSON = res.getBody();
+  
+  // Validate that the response message indicates successful creation
+  test("Response message indicates successful creation", function () {
+      expect(responseJSON).to.have.property('message').that.includes('Custom_response has been created successfully.');
+  });
+  
+  // Check if data.custom_response_id exists and is not null
+  test("Data.custom_response_id exists and is not null", function () {
+      expect(responseJSON.data).to.have.property('custom_response_id').that.is.not.null;
+  });
+  
+  // Save data.custom_response_id to a variable
+  test("Save custom_response_id to variable", function () {
+      bru.setEnvVar("custom_response_id", responseJSON.data.custom_response_id);
+  });
+}
+
+settings {
+  encodeUrl: true
+}

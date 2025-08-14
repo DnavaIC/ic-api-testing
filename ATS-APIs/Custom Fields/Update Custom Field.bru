@@ -1,0 +1,25 @@
+meta {
+  name: Update Custom Field
+  type: http
+  seq: 3
+}
+
+put {
+  url: http://ats-qa-alb-791257949.us-west-2.elb.amazonaws.com/ats/contracts/d53611b2-8051-4577-b8e1-6046558f82c8/custom_field/177d8500-3744-4506-9c0c-d9b6d30d42d6
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+body:json {
+  {
+     "prompt": "Lorem ipsum dolor sit amet consectetur adipiscing elit blabalbalba."
+  }
+}
+
+settings {
+  encodeUrl: true
+}

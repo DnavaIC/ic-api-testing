@@ -1,0 +1,47 @@
+meta {
+  name: Get Candidates
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base-url}}/ats/contracts/{{SONGS-contract-id}}/candidates?order_by=name:asc
+  body: none
+  auth: bearer
+}
+
+params:query {
+  order_by: name:asc
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+script:post-response {
+  test("Candidates are sorted by name ascending", function () {
+      const responseData = res.getBody().data;
+      
+      // Check if the response is a valid array with more than one item
+      if (!Array.isArray(responseData) || responseData.length <= 1) {
+          // If there aren't enough items, the test passes as sorting can't be validated
+          expect(true, "Not enough candidates to validate sort order.").to.be.true;
+          return;
+      }
+      
+      // Main test loop
+      for (let i = 0; i < responseData.length - 1; i++) {
+          // Handle potential null values by treating them as empty strings
+          const currentName = responseData[i].name || '';
+          const nextName = responseData[i+1].name || '';
+          
+          // Use localeCompare for accurate alphabetical string comparison
+          // It returns a negative value if the current string comes before the next one
+          expect(currentName.localeCompare(nextName) <= 0, `Incorrect order at index ${i}: '${currentName}' does not come before '${nextName}'`).to.be.true;
+      }
+  });
+}
+
+settings {
+  encodeUrl: true
+}

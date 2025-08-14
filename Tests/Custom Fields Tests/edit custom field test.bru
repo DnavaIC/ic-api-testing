@@ -1,0 +1,34 @@
+meta {
+  name: edit custom field test
+  type: http
+  seq: 12
+}
+
+put {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/custom_field/{{custom_field_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+body:json {
+  {
+      "prompt": "EDIT."
+  }
+}
+
+script:post-response {
+  var responseJSON = res.getBody();
+  
+  test("Response contains success message", function () {
+      expect(responseJSON).to.have.property('message').that.is.a('string').and.includes('Custom Field successfully updated.');
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+}

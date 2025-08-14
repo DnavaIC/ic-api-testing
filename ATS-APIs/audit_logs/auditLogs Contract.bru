@@ -1,0 +1,23 @@
+meta {
+  name: auditLogs Contract
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base-url}}/ats/audit-logs/contract/{{contract-id}}?count=50
+  body: none
+  auth: bearer
+}
+
+params:query {
+  count: 50
+}
+
+auth:bearer {
+  token: {{congito-token}}
+}
+
+settings {
+  encodeUrl: true
+}

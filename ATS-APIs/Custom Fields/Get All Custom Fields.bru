@@ -1,0 +1,20 @@
+meta {
+  name: Get All Custom Fields
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base-url}}/ats/contracts/{{contract-id}}/custom_fields?page=1&rows=10
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 1
+  rows: 10
+}
+
+settings {
+  encodeUrl: true
+}
